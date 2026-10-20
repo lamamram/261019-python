@@ -20,3 +20,25 @@
 """
 
 # %%
+_str = "-123"
+_str.isnumeric()
+
+# if _str.isnumeric():
+
+# int négatif: commence par "-" ET le reste (slice) est numérique
+# if _str[0] == "-" and ...
+if _str.isnumeric() or (_str.startswith("-") and _str[1:].isnumeric()):
+    _str = int(_str)
+print(_str)
+
+# %%
+
+values = input("saisir des valueurs entiers relatifs séparés par ,")
+print(values)
+# %%
+values = values.split(",")
+print(values)
+
+# %%
+for value in values:
+    pass
