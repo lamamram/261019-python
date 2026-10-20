@@ -31,11 +31,33 @@ key = _template[start_index:end_index]
 to_replace = "((" + key + "))"
 real_value = str(injections[key])
 
-_template.replace(to_replace, real_value)
+print(_template.replace(to_replace, real_value))
 
 # %%
 _str = "remplacer un truc dans une phrase"
 print(_str.replace("truc", "machin"))
+
+# %% ------------------- tentative avec for --------------------
+
+for key in injections:
+    _template = _template.replace("((" + key + "))", str(injections[key]))
+
+print(_template)
+
+# %% ---------------------- avec while ------------------------
+
+while "((" in _template:
+    start_index = _template.index("((") + 2
+    end_index = _template.index("))")
+    key = _template[start_index:end_index]
+
+    to_replace = "((" + key + "))"
+    real_value = str(injections.get(key, "N/A"))
+
+    _template = _template.replace(to_replace, real_value)
+
+print(_template)
+
 
 # %% ----- portage de la cellule précédente en fonction ----------
 """
