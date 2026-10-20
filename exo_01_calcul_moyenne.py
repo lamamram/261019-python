@@ -40,5 +40,20 @@ values = values.split(",")
 print(values)
 
 # %%
+ints = []
 for value in values:
-    pass
+    # nettoyer les espaces à gauche et à droite (.strip())
+    value = value.strip()
+    if value.isnumeric() or (value.startswith("-") and value[1:].isnumeric()):
+        ints.append(int(value))
+print(ints)
+
+# %%
+
+# moyenne = somme des éléments / nb d'éléments
+# si la liste n'est pas vide ==> SI LA LISTE EST VRAIE
+# if len(ints) != 0:
+if ints:
+    avg = round(sum(ints) / len(ints), 2) 
+    print(f"la moyenne de {ints}: {avg}")
+# %%
