@@ -25,15 +25,15 @@ _str.isnumeric()
 
 # if _str.isnumeric():
 
-# int négatif: commence par "-" ET le reste (slice) est numérique
-# if _str[0] == "-" and ...
+#                       int négatif: commence par "-" ET le reste (slice) est numérique
+                        # if _str[0] == "-" and ...
 if _str.isnumeric() or (_str.startswith("-") and _str[1:].isnumeric()):
     _str = int(_str)
 print(_str)
 
 # %%
 
-values = input("saisir des valueurs entiers relatifs séparés par ,")
+values = input("saisir des valeurs entiers relatifs séparés par ,")
 print(values)
 # %%
 values = values.split(",")
@@ -54,6 +54,6 @@ print(ints)
 # si la liste n'est pas vide ==> SI LA LISTE EST VRAIE
 # if len(ints) != 0:
 if ints:
-    avg = round(sum(ints) / len(ints), 2) 
+    avg = round(sum(ints) / len(ints), 2)
     print(f"la moyenne de {ints}: {avg}")
 # %%
