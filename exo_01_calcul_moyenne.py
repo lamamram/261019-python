@@ -46,14 +46,13 @@ for value in values:
     value = value.strip()
     if value.isnumeric() or (value.startswith("-") and value[1:].isnumeric()):
         ints.append(int(value))
-print(ints)
-
-# %%
-
+    else:
+        print(f"{value} not integer !")
+else:
 # moyenne = somme des éléments / nb d'éléments
 # si la liste n'est pas vide ==> SI LA LISTE EST VRAIE
 # if len(ints) != 0:
-if ints:
-    avg = round(sum(ints) / len(ints), 2)
-    print(f"la moyenne de {ints}: {avg}")
+    if ints:
+        avg = round(sum(ints) / len(ints), 2)
+        print(f"la moyenne de {ints}: {avg}")
 # %%
