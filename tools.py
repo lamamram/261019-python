@@ -28,4 +28,4 @@ def parse_template(
 
     return tpl
 
-print("coucou")
+print(__name__)
