@@ -67,7 +67,12 @@ technique
 3/ réféchir sur les paramètres d'entrée (positionnels / centraux, et optionnels => valeur par défaut) et de sortie
 4/ refactorer le code pour utiliser les paramètres d'entrée et construire la sortie
 5/ tester dans différents cas
+   1. le cas de l'exemple
+   2. le cas ci dessous
 """
+
+t = "blabla {{param}}"
+data = {"param": 100}
 
 
 # %%
