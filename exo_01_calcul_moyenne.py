@@ -34,12 +34,9 @@ print(_str)
 # %%
 
 values = input("saisir des valeurs entiers relatifs séparés par ,")
-print(values)
-# %%
-values = values.split(",")
-print(values)
 
-# %%
+values = values.split(",")
+
 ints = []
 for value in values:
     # nettoyer les espaces à gauche et à droite (.strip())
@@ -48,6 +45,7 @@ for value in values:
         ints.append(int(value))
     else:
         print(f"{value} not integer !")
+        break
 else:
 # moyenne = somme des éléments / nb d'éléments
 # si la liste n'est pas vide ==> SI LA LISTE EST VRAIE
