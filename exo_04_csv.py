@@ -9,6 +9,7 @@ outils: pip install requests
 2. extraire le fichier .csv contenu dans le zip à télécharger
 hint: zipfile.Zipfile (doc ou google/stackoverflow)
 hint: les zip s'ouvrent et se ferment
+hint: pour trouver le nom du fichier à extraire regarder la méthode .namelist() de l'objet ZipFile
 
 3. déplacer le fichier csv en dans data/dns.csv
 4. ne faire ce qui précède qui si ce n'est pas déjà fait
@@ -61,9 +62,12 @@ Réponse HTTP
 - le corps de la réponse (html, fichier sous forme de flux d'octets, json ... )
 """
 
+# %%
+
 import requests
 from urllib.parse import urlsplit
 import os
+from pathlib import Path
 
 
 URL = "https://www.afnic.fr/wp-media/ftp/documentsOpenData/202503_OPENDATA_A-NomsDeDomaineEnPointFr.zip"
@@ -71,8 +75,11 @@ archive_name = urlsplit(URL).path
 archive_name = os.path.split(archive_name)[-1]
 # archive_name = URL.split("/")[-1]
 
+p_archive = Path(f"./{archive_name}")
 # si l'on a pas déjà téléchargé l'archive
-if not os.path.exists(f"./{archive_name}"):
+
+# if not os.path.exists():
+if not p_archive.exists():
 # le réseau indépendant de notre volonté ==> try
    try:
       r = requests.get(URL)
@@ -93,5 +100,25 @@ if not os.path.exists(f"./{archive_name}"):
 
 
 
+
+# %% -------------------- décompresser une archive ----------------------
+# rendre la cellule idempotente (même puissance => même état finale qq soit le nb d'exécution)
+from zipfile import ZipFile
+
+p_data = Path("./data")
+p_dns = p_data / "dns.csv"
+
+# print(p_dns)
+# print(p_dns.absolute())
+
+# if not os.path.exists("./data/dns.csv"):
+if not p_dns.exists():
+   with ZipFile(p_archive, mode="r") as z:
+      csv_name = z.namelist()[0]
+      z.extract(csv_name)
+
+   if not p_data.exists():
+      os.mkdir(p_data)
+   os.rename(f"./{csv_name}", p_dns)
 
 # %%
