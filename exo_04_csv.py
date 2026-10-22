@@ -1,5 +1,6 @@
 # %%
 """
+
 URL: https://www.afnic.fr/wp-media/ftp/documentsOpenData/202503_OPENDATA_A-NomsDeDomaineEnPointFr.zip
 outils: pip install requests
 
@@ -10,7 +11,7 @@ hint: zipfile.Zipfile (doc ou google/stackoverflow)
 hint: les zip s'ouvrent et se ferment
 
 3. déplacer le fichier csv en dans data/dns.csv
-4.. ne faire ce qui précède qui si ce n'est pas déjà fait
+4. ne faire ce qui précède qui si ce n'est pas déjà fait
 hint: module os et pathlib.Path
 
 
@@ -23,6 +24,73 @@ hint: module os et pathlib.Path
 
 modus operandi: faire ceci en n'ouvrant le csv en lecture qu'une seule fois
 """
+# attendre xs avant de continuer
+from time import sleep
+
+# %% -------------------------- téléchargement avec requests -------------------------------
+
+"""
+HTTP: Hyper Text Transfer Protocl
+
+protocole d'échange de données entre un client (requête HTTP) et un serveur distant qui délivre une réponse HTTP
+
+requête HTTP
+--------------
+- version de http (1.1) / 2 / 3
+- URL : Unified Resource Location: adresse d'une ressource 
+protocole|://|nom de domaine|chemin(path) physique ou virtuel|resource (.html, .php, .zip, ...)          |query parameters    |hash données supplémentaires
+https     :// www.afnic.fr  |/wp-media/ftp/documentsOpenData/202503_OPENDATA_A-NomsDeDomaineEnPointFr.zip|?param=1&param2=truc|#tag
+
+- Méthode ou verbe HTTP: mode d'accès à la ressource
+  GET: lire la ressource
+  POST: créer la ressource sur le serveur distant (formulaire)
+  PUT/PATCH : modifier la ressource complètement ou partiellement
+  DELETE: supprimer la ressource distante
+
+- les entêtes de requêtes : métadonnées (infos contextuelles sur le client)
+
+- données de la requête en cas de POST/PUT/PATCH
+
+
+Réponse HTTP
+------------
+
+                                                     OK  | OK mais redirection| pb sur la requête| pb serveur
+- Code de statut: entier répartie en famille de code 2XX | 3XX                | 4XX              | 5XX
+- entête de réponse: infos sur le serveur
+- le corps de la réponse (html, fichier sous forme de flux d'octets, json ... )
+"""
+
+import requests
+from urllib.parse import urlsplit
+import os
+
+
+URL = "https://www.afnic.fr/wp-media/ftp/documentsOpenData/202503_OPENDATA_A-NomsDeDomaineEnPointFr.zip"
+archive_name = urlsplit(URL).path
+archive_name = os.path.split(archive_name)[-1]
+# archive_name = URL.split("/")[-1]
+
+# si l'on a pas déjà téléchargé l'archive
+if not os.path.exists(f"./{archive_name}"):
+# le réseau indépendant de notre volonté ==> try
+   try:
+      r = requests.get(URL)
+
+      # 1. regarder le status_code
+      if 200 <= r.status_code < 300:
+         # 2. regarder le type de contenu i.e l'entête Content-Type dans les entêtes
+         if "application/zip" in r.headers["content-type"]:
+            # 3. selectionner le bon corps de réponse
+            # ---------------------------------> binaire
+            with open(f"./{archive_name}", mode="wb") as f:
+               f.write(r.content)
+      else:
+         raise ValueError(f"mauvais code: {r.status_code}")
+   except (requests.ConnectionError, ValueError) as e:
+      print(e)
+
+
 
 
 
