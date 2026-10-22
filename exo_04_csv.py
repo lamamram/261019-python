@@ -169,4 +169,21 @@ with open(p_dns, mode="r", encoding=ENCODING) as f:
          write_slice(i, header, rows)
          
 
+# %% --------------------- initiation à pandas ------------------------
+# pip install pandas
+import pandas as pd
+
+dns_df = pd.read_csv(
+   URL,
+   delimiter=';',
+   encoding=ENCODING
+)
+# dns_df.to_csv() ....
+
+# %%
+subset_df = dns_df[ ["Nom de domaine", "Pays BE"] ]
+subset_df
+# %%
+gb = subset_df.groupby("Pays BE")
+gb["Pays BE"].count().sort_values(ascending=False)
 # %%
