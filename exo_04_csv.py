@@ -69,7 +69,6 @@ from urllib.parse import urlsplit
 import os
 from pathlib import Path
 
-
 URL = "https://www.afnic.fr/wp-media/ftp/documentsOpenData/202503_OPENDATA_A-NomsDeDomaineEnPointFr.zip"
 archive_name = urlsplit(URL).path
 archive_name = os.path.split(archive_name)[-1]
@@ -120,5 +119,54 @@ if not p_dns.exists():
    if not p_data.exists():
       os.mkdir(p_data)
    os.rename(f"./{csv_name}", p_dns)
+
+# %% ---------------- détection de l'encodage -------------------
+
+# pip install chardet
+
+import chardet
+
+with open(p_dns, 'rb') as f:
+    raw_data = b"".join(f.readlines(100))
+
+# Détection de l'encodage
+result = chardet.detect(raw_data)
+encoding = result['encoding']
+confidence = result['confidence']
+
+print(f"Encodage détecté : {encoding} (avec une confiance de {confidence * 100:.2f}%)")
+
+# %% ------------------------------- découpe d'un gros csv ---------------------
+"""
+je boucle sur les lignes d'un gros csv
+j'attends les lignes qui sont des multiples de 100k
+dans ce cas j'écris les 100k dans un nouveau fichier à nommé moi-même (dns_100000.csv, dns_200000.csv...)
+"""
+
+import csv
+
+ENCODING = "utf-8"
+
+def write_slice(i, header, rows: list):
+   with open(p_data / f"dns_{i}.csv", mode="w", encoding=ENCODING) as f:
+      writer = csv.writer(f, delimiter=';', lineterminator='\n')
+      writer.writerow(header)
+      writer.writerows(rows)
+      # rows = [] # ne fonctionne pas dans une fonciton car id !=
+      rows.clear() # fonctionne car fonction muable donc même id
+
+slice_size = 10**5
+nb_slices = 2
+
+rows = []
+with open(p_dns, mode="r", encoding=ENCODING) as f:
+   reader = csv.reader(f, delimiter=";")
+   header = next(reader)
+   for i, row in enumerate(reader, start=1):
+      if i > nb_slices * slice_size: break
+      rows.append(row)
+      if not i % slice_size:
+         write_slice(i, header, rows)
+         
 
 # %%
