@@ -14,4 +14,5 @@ class Counter:
 
         # trier par le dictionnaire par occurence
         # ne garder que les nb_crop mots les + fréquents
+        return occurences
 
