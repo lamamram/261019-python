@@ -26,3 +26,4 @@ except (requests.ConnectionError, ValueError) as e:
     print(e)
 
 print(data)
+# %%
