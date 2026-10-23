@@ -26,4 +26,54 @@ except (requests.ConnectionError, ValueError) as e:
     print(e)
 
 print(data)
+
+# %% -------------- gestion dynamique des attributs: getattr, setattr, hasattr -------------------
+
+class Truc:
+    pass
+
+t = Truc()
+
+print(f"est que l'objet t a un attribut du nom 'param' ? {hasattr(t, "param")}")
+setattr(t, "param", 10)
+# print(f"et maintenant ? {hasattr(t, "param")} et c'est {t.param}")
+print(f"et maintenant ? {hasattr(t, "param")} et c'est {getattr(t, "param")}")
+
+
+# %% ------------------ créer un client d'api pour gorest.co.in --------------
+import requests
+from typing import List, Mapping, Any
+
+class GoRestApiV2:
+    def __init__(self):
+        self.path = "https://gorest.co.in/public" 
+        self.version = "v2"
+
+    def __call(self, method: str, endpoint: str):
+        ret = {"data": [], "error": ""}
+        try:
+            url = self.path + "/" + self.version + "/" + endpoint
+            call_fn = getattr(requests, method.lower())
+            r = call_fn(url)
+
+            if 200 <= r.status_code < 300:
+                if "application/json" in r.headers["content-type"]:
+                    ret["data"] = r.json()
+
+            else:
+                raise ValueError(f"mauvais code: {r.status_code}")
+        except (requests.ConnectionError, ValueError) as e:
+            ret["error"]
+        return ret
+            
+
+
+    def get_users(self) -> Mapping[str, Any]:
+        return self.__call("GET", "users")
+        
+
+
+api = GoRestApiV2()
+api.get_users()
+
 # %%
