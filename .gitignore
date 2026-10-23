@@ -14,3 +14,6 @@ dns_*.csv
 data/
 *.ui
 Ui_*.py
+build/
+dist/
+*.spec

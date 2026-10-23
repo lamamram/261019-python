@@ -83,3 +83,20 @@ pyside6-uic gui_analyser.ui -o gui_MainWindow.py
    + refaire le layout/mise en page (verticale / horizontale / formulaire ==> grille)
 3. sauvegarder le fichier
 4. régénérer le fichier Python avec `pyside6-uic gui_analyser.ui -o gui_MainWindow.py`
+
+### transformer l'application python en .exe
+
+1. installer `pyinstaller` si ce n'est pas déjà fait:
+
+```bash
+pip install pyinstaller
+```
+2. créer le fichier exécutable:
+
+```bash
+pyinstaller --onefile --windowed ./gui_app.py
+```
+
+3. les dossier build et dist vont être créés mais doivent être gitignorés
+
+4. l'exécutable est dans le dossier `dist`
