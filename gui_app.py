@@ -25,10 +25,14 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         ici on ajoute la logique métier
         """
         self.listWidget.clear()
+        
         text = self.textEdit.toPlainText()
+        word_length = self.signWords.value()
+
         cleaner = Cleaner(text)
-        counter = Counter(cleaner)
+        counter = Counter(cleaner, word_length)
         occurences = counter.count()
+        
         for key, occurence in occurences.items():
             line = f"{key}: {occurence}"
             self.listWidget.addItem(line)
