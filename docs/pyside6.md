@@ -73,3 +73,13 @@ pyside6-uic gui_analyser.ui -o gui_MainWindow.py
    * ajouter les résultats dans `listWidget`
 
 4. lancer l'application `gui_app.py` avec python
+
+### mise à jour du layout
+
+1. ouvrir `analyzer.ui` dans `pyside6-designer`
+   récents > `analyzer.ui` ou fichier > ouvrir > `analyzer.ui`
+2. effectuer les modifications nécessaires sur les widgets
+   + le plus efficace est de casser la mise en page courante: clic-droit sur mettre en page > "Casser la mise en page"
+   + refaire le layout/mise en page (verticale / horizontale / formulaire ==> grille)
+3. sauvegarder le fichier
+4. régénérer le fichier Python avec `pyside6-uic gui_analyser.ui -o gui_MainWindow.py`
