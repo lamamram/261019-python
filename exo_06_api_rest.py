@@ -67,13 +67,30 @@ class GoRestApiV2:
         return ret
             
 
+    def get_users(self, per_page: int=100) -> Mapping[str, Any]:
+        """retourne tous les utilisateurs !!!"""
+        i = 1
+        data = []
+        while True:
+            ret = self.__call("GET", f"users?per_page={per_page}&page={i}")
+            if ret["error"]:
+                raise ValueError(ret["error"])
+            # le serveur retourne [] quand il n'ya plus de données
+            elif not ret["data"]:
+                break
+            print(f"page {i} fetched !")
+            data += ret["data"]
+            i += 1
+        ret["data"] = data
+        return ret
 
-    def get_users(self) -> Mapping[str, Any]:
-        return self.__call("GET", "users")
+    def get_user(self, user_id: int):
+        return self.__call("GET", f"users/{user_id}")
         
 
 
 api = GoRestApiV2()
 api.get_users()
+# api.get_user(8331323)
 
 # %%
