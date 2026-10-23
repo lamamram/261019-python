@@ -67,7 +67,7 @@ pyside6-uic gui_analyser.ui -o gui_MainWindow.py
 3. ajouter une gestion d'évènement sur le bouton
    * utiliser l'attribut `okBtn` hérité
    * *connecter* l'évènenement `clicked` de cet l'attribut
-   * avec une méthode à écrire `on_ok_clicked` dans la classe `MyWindow`
+   * avec une méthode à écrire `on_okBtn_clicked` dans la classe `MyWindow`
    * cette méthode va trouver le contenu du `TextEdit`
    * instancier le `Counter`
    * ajouter les résultats dans `listWidget`
